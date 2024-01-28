@@ -1,0 +1,79 @@
+.header {
+    position: fixed;
+    width: 70px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 10px;
+    height: 100svh;
+    border-right: 1px solid #fff;
+    box-sizing: border-box;
+
+    @include mq(980) {
+        position: relative;
+        flex-direction: row;
+        padding: 10px 10px;
+        height: 100%;
+        width: 100%;
+        border-right: 0px;
+        border-bottom: 1px solid #fff;
+    }
+
+    .logo {
+        position: relative;
+        font-size: 24px;
+        color: #fff;
+
+        &::after {
+            content: '';
+            position: absolute;
+            left: -20px;
+            bottom: -20px;
+            width: 100vw;
+            height: 1px;
+            background-color: #fff;
+
+            @include mq(980) {
+                    display: none;
+                }
+            }
+        }
+
+        ul {
+            margin-bottom: 30px;
+            @include mq(980){
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin: 0;
+            }
+            li {
+                position: relative;
+
+                a {
+                    &::before {
+                        content: '';
+                        position: absolute;
+                        inset: 0;
+
+                    }
+
+                    img {
+                        filter: sepia(1);
+                        transition: filter 0.3s ease-in-out, 0.3s ease-in-out;
+
+                        &:hover {
+                            filter: sepia(0.8);
+                            transform: translateY(-5px);
+                        }
+                        @include mq(980){
+                            width: 30px;
+                        }
+                    }
+                }
+
+            }
+        }
+
+    }

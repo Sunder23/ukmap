@@ -1,0 +1,79 @@
+body,
+html,
+p,
+h1,
+h2,
+h3,
+h4,
+a,
+label,
+button,
+input,
+ul {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  vertical-align: baseline;
+  font-family: 'Geometria', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #46433E;
+  box-sizing: border-box;
+}
+
+
+div {
+  outline: none;
+  box-sizing: border-box;
+}
+
+button {
+  border: none;
+}
+
+input,
+button,
+a {
+  outline: none;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+button {
+  background: transparent;
+  &:active {
+    outline: none;
+  }
+}
+li {
+  list-style-type: none;
+}
+.dist {
+  ul {
+    li {
+      list-style-type: disc !important;
+    }
+  }
+}
+.number_list {
+  ol {
+    li {
+      list-style-type: decimal;
+    }
+  }
+  ul {
+    margin: 0px 0px 0px 40px;
+  }
+}
+
+html {
+  width: 100%;
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.mfp-hide {
+ display: none !important;
+}

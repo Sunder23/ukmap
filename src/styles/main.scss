@@ -1,0 +1,18 @@
+//tools
+@import '_mixins';
+@import "reset";
+@import "guide";
+//components
+@import "components/header";
+@import "components/footer";
+@import "components/btn";
+@import "components/input";
+
+//page
+@import "page/index";
+
+// стили для библиотеки aos
+@import "../../node_modules/aos/dist/aos";
+
+// стили для свайпера
+// @import "../../node_modules/swiper/swiper-bundle.min";

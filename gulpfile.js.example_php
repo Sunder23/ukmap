@@ -1,0 +1,124 @@
+'use strict';
+// PACKAGES
+const { series } = require('gulp');
+const gulp = require('gulp');
+const sass = require('gulp-sass')(require('sass'));
+const autoprefixer = require('gulp-autoprefixer');
+const sourcemaps = require('gulp-sourcemaps');
+const rename = require('gulp-rename');
+const filesize = require('gulp-filesize');
+const cleanCSS = require('gulp-clean-css');
+const babel = require('gulp-babel');
+const uglify = require('gulp-uglify');
+const clean = require('gulp-clean');
+const ftp = require('vinyl-ftp');
+const browserSync = require('browser-sync').create();
+
+
+
+
+const ftpConnection = ftp.create({
+    host: 'igrush10.ftp.tools',
+    user: 'igrush10_lvivmedica',
+    password: 'Str7VJ98e5',
+    parallel: 10,
+    log: console.log,
+});
+
+const pathConfig = {
+    src: {
+        style: 'src/styles/main.scss',
+        js: 'src/js/**/*.js',
+    },
+    build: {
+        css: `./build/styles`,
+        js: `./build/js`
+    },
+    watch: {
+        style: ['src/styles/**/*.scss'],
+        js: './src/js/**/*.js',
+        php: `./**/*.php`
+    }
+};
+
+function devBuildStyles() {
+    return gulp.src(pathConfig.src.style)
+        .pipe(sourcemaps.init())
+        .pipe(sass())
+        .pipe(autoprefixer())
+        // .pipe(rename('new name'))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(pathConfig.build.css))
+        .pipe(browserSync.stream())
+}
+
+function devBuildJS() {
+    return gulp.src(pathConfig.src.js)
+        .pipe(sourcemaps.init())
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(sourcemaps.write('.'))
+        .pipe(gulp.dest(pathConfig.build.js))
+        .pipe(browserSync.reload({ stream: true }));
+}
+
+function watch() {
+    gulp.watch(pathConfig.watch.style, gulp.series(devBuildStyles, deploy));
+    gulp.watch(pathConfig.watch.js, gulp.series(devBuildJS, deploy));
+    gulp.watch(pathConfig.watch.php).on('change', browserSync.reload);
+    browserSync.init(browserSyncConfig);
+}
+
+function prodBuildStyles() {
+    return gulp.src(pathConfig.src.style)
+        .pipe(sass())
+        .pipe(autoprefixer())
+        .pipe(filesize())
+        .pipe(cleanCSS())
+        // .pipe(rename('new name'))
+        .pipe(gulp.dest(pathConfig.build.css))
+        .pipe(filesize())
+}
+
+function prodBuildJS() {
+    return gulp.src(pathConfig.src.js)
+        .pipe(babel({
+            presets: ['@babel/env']
+        }))
+        .pipe(filesize())
+        .pipe(uglify())
+        .pipe(gulp.dest(pathConfig.build.js))
+        .pipe(filesize())
+}
+
+
+function deploy(done) {
+    const globs = ['./build/styles/**', './build/js/**'];
+
+    return gulp.src(globs, { base: '.', buffer: false })
+    .pipe(ftpConnection.dest('/wp-content/themes/lvivmedicalcenter'))
+    .on('end', function () {
+            browserSync.reload();
+            done();
+        });
+}
+
+function cleanStylesDir(src) {
+    return gulp.src([pathConfig.build.css + '/*.css', pathConfig.build.css + '/*.css.map'], { read: false, allowEmpty: true })
+        .pipe(clean());
+}
+
+function cleanJSDir(src) {
+    return gulp.src([pathConfig.build.js + '/*.js', pathConfig.build.js + '/*.js.map'], { read: false })
+        .pipe(clean());
+}
+
+exports.deploy = deploy;
+exports.devBuildStyles = devBuildStyles;
+exports.devBuildJS = devBuildJS;
+exports.prodBuildStyles = series(cleanStylesDir, prodBuildStyles);
+exports.prodBuildJS = series(cleanJSDir, prodBuildJS);
+exports.dev = watch;
+exports.devBuild = series(devBuildStyles, devBuildJS, deploy);
+exports.build = series(cleanStylesDir, prodBuildStyles, cleanJSDir, prodBuildJS, deploy);

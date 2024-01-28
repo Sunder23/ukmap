@@ -1,0 +1,164 @@
+//color
+:root {
+    // --text-color: #696871;
+    // --tilte-color: #19191B;
+    // --blue-color: #5454D4;
+    // --orange-color: #FF7143;
+    --primary-color: #282942;
+    --secondary-color: #5D608D;
+    --third-color: #99A1E0;
+    --fourth-color: #CFD5EA;
+}
+
+html,
+body {
+    height: 100%;
+    font-family: 'Bebas Neue', sans-serif;
+}
+body * {
+    font-family: 'Bebas Neue', sans-serif;
+}
+
+.wrapper {
+    min-height: 100%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.page {
+    flex: 1 1 auto;
+}
+
+.container {
+    max-width: 1175px;
+    padding: 0 15px;
+    margin: auto;
+    width: 100%;
+}
+
+.none {
+    display: none !important;
+}
+
+h1 {
+    color: var(--tilte-color);
+    font-size: 80px;
+    font-weight: 700;
+    line-height: 77px;
+    font-family: inherit;
+
+    @include mq(980) {
+        font-size: 60px;
+        line-height: 55px;
+    }
+
+    @include mq(768) {
+        font-size: 30px;
+        line-height: 25px;
+    }
+}
+
+h2 {
+    color: var(--tilte-color);
+    font-size: 50px;
+    font-weight: 700;
+    line-height: 57px;
+
+    @include mq(980) {
+        font-size: 40px;
+        line-height: 55px;
+    }
+
+    @include mq(768) {
+        font-size: 24px;
+        line-height: 25px;
+    }
+}
+
+h3 {
+    font-size: 80px;
+    font-weight: 700;
+    line-height: 77px;
+}
+
+
+
+// === breakpoints ===
+$screen-xs-max: 599.98px;
+$screen-sm: 600px;
+$screen-sm-max: 959.98px;
+$screen-md: 960px;
+$screen-md-max: 1263.98px;
+$screen-lg: 1264px;
+$screen-lg-max: 1903.98px;
+$screen-xl: 1904px;
+// === /breakpoints ===
+// === / VARIABLES ===
+
+
+
+::-webkit-scrollbar {
+    width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: var(--blue-color);
+}
+
+/* Handle on hover */
+// ::-webkit-scrollbar-thumb:hover {
+//     background: rgba(var(--blue-color), $alpha: 1.0);
+// }
+
+
+
+body {
+    position: relative;
+    // font-family: system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+    a {
+        font-family: inherit;
+    }
+
+    color: var(--text-color);
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 30px;
+    letter-spacing: -0.625px;
+
+    @include mq(980) {
+        font-size: 16px;
+        line-height: 24px;
+    }
+
+    @include mq(768) {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+section {
+    margin: 60px 0;
+
+    @include mq(980) {
+        margin: 40px 0;
+    }
+
+    @include mq(768) {
+        margin: 30px 0;
+    }
+}
+
+img {
+    object-fit: cover;
+    object-position: center;
+    display: flex;
+    max-width: 100%;
+}
