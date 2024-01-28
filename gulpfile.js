@@ -110,11 +110,43 @@ function prodBuildStyles() {
 
 function prodBuildJS() {
     return gulp.src(pathConfig.src.js)
+        .pipe(sourcemaps.init())
         .pipe(babel({
             presets: ['@babel/env']
         }))
-        .pipe(filesize())
-        .pipe(uglify())
+        .pipe(plumber({
+            errorHandler: notify.onError({
+                title: "JS",
+                message: "Error: <%= error.message %>"
+            })
+        }))
+        .pipe(webpackStream({
+            mode: isProd ? 'production' : 'development',
+            output: {
+                filename: 'main.js',
+            },
+            module: {
+                rules: [{
+                    test: /\.m?js$/,
+                    exclude: /node_modules/,
+                    use: {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                ['@babel/preset-env', {
+                                    targets: "defaults"
+                                }]
+                            ]
+                        }
+                    }
+                }]
+            },
+        }))
+        .on('error', function (err) {
+            console.error('WEBPACK ERROR', err);
+            this.emit('end');
+        })
+        .pipe(sourcemaps.write('.'))
         .pipe(gulp.dest(pathConfig.build.js))
         .pipe(filesize())
 }

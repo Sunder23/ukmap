@@ -4,6 +4,7 @@ import mapUkraine from "./region.js";
 
 // AOS.init()
 
+
 const svg = document.querySelectorAll('.map>svg g')
 
 mapUkraine.forEach(item => {
